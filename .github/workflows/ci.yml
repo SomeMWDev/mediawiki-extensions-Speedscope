@@ -61,13 +61,17 @@ jobs:
         with:
           path: mediawiki/extensions/Speedscope
 
-      - name: Composer update
+      - name: Composer update (core)
         run: composer update
         working-directory: mediawiki
 
       - name: Run PHPUnit
         run: composer run phpunit extensions/Speedscope/tests
         working-directory: mediawiki
+
+      - name: Composer update (extension)
+        run: composer update
+        working-directory: mediawiki/extensions/Speedscope
 
       - name: Run phan
         working-directory: mediawiki/extensions/Speedscope
