@@ -5,6 +5,7 @@
 		]
 	},
 	"speedscope-desc": "Allows creating Speedscope profiles",
+	"speedscope-notification": "$1 ($2, $3)",
 	"speedscope-notification-link-view": "View profile",
 	"speedscope-notification-link-json": "JSON",
 	"speedscope-notification-link-metadata": "Metadata",

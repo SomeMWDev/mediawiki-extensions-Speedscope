@@ -5,6 +5,7 @@
 		]
 	},
 	"speedscope-desc": "{{desc|name=Speedscope|url=https://www.mediawiki.org/wiki/Extension:Speedscope}}",
+	"speedscope-notification": "Body of the notification displayed after creating a forced speedscope profile.\n\nParameters:\n* $1 - A link to the profile viewer.\n* $2 - A link to the JSON of the profile.\n* $3 - A link to the metadata of the profile.",
 	"speedscope-notification-link-view": "Label of the link to the speedscope UI for the profile; displayed in the speedscope notification.",
 	"speedscope-notification-link-json": "Label of the link to the JSON of the profile; displayed in the speedscope notification.",
 	"speedscope-notification-link-metadata": "Label of the link to the metadata of the profile; displayed in the speedscope notification.",

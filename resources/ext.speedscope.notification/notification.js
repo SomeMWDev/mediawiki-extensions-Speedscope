@@ -1,6 +1,6 @@
 $( () => {
-	const profileId = mw.config.get( 'speedscopeProfileId' );
 	const endpoint = mw.config.get( 'speedscopeEndpoint' );
+	const profileId = mw.config.get( 'speedscopeProfileId' );
 
 	const $speedscopeLink = $( '<a>' )
 		.attr( 'href', `${ endpoint }/view/${ profileId }` )
@@ -17,11 +17,10 @@ $( () => {
 
 	mw.notify(
 		$( '<div>' ).append(
-			$speedscopeLink,
-			mw.message( 'word-separator' ).parseDom(),
-			mw.message( 'parentheses' ).params(
+			mw.message(
+				'speedscope-notification',
+				$speedscopeLink,
 				$jsonLink,
-				mw.message( 'comma-separator' ).parseDom(),
 				$metadataLink
 			).parseDom()
 		),

@@ -55,8 +55,18 @@
 			"value": null
 		}
 	},
-	"HookHandlers": {},
-	"Hooks": {},
+	"HookHandlers": {
+		"main": {
+			"class": "MediaWiki\\Extension\\Speedscope\\Hooks",
+			"services": [
+				"MainConfig",
+				"Speedscope.Profile"
+			]
+		}
+	},
+	"Hooks": {
+		"BeforePageDisplay": "main"
+	},
 	"MessagesDirs": {
 		"Speedscope": [
 			"i18n"
@@ -72,12 +82,11 @@
 				"notification.js"
 			],
 			"messages": [
+				"speedscope-notification",
+				"speedscope-notification-success",
 				"speedscope-notification-link-view",
 				"speedscope-notification-link-json",
-				"speedscope-notification-link-metadata",
-				"comma-separator",
-				"word-separator",
-				"parentheses"
+				"speedscope-notification-link-metadata"
 			]
 		}
 	},
