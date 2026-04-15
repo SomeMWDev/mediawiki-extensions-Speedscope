@@ -48,7 +48,7 @@ class ExcimerSpeedscopeProfiler implements ISpeedscopeProfiler {
 	 * speedscope service.
 	 */
 	private function recordProfile(): void {
-		// Lazy-autoload class
+		// Load class manually, as this is run very early in MediaWiki's bootstrapping process
 		require_once __DIR__ . '/../SpeedscopeProfile.php';
 
 		$this->profile = new SpeedscopeProfile(
