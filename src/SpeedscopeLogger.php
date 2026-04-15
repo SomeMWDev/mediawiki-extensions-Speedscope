@@ -8,6 +8,7 @@ use MediaWiki\Context\RequestContext;
 use MediaWiki\Exception\MWExceptionHandler;
 use MediaWiki\Http\HttpRequestFactory;
 use MediaWiki\Language\RawMessage;
+use MediaWiki\WikiMap\WikiMap;
 use StatusValue;
 use Throwable;
 
@@ -41,7 +42,7 @@ class SpeedscopeLogger {
 		$context = RequestContext::getMain();
 		$body = json_encode( [
 			'id' => $profile->getId(),
-			'wiki' => $wgDBname ?? 'unknown',
+			'wiki' => WikiMap::getCurrentWikiId(),
 			'url' => $requestUri,
 			'cfRay' => $context->getRequest()->getHeader( 'Cf-Ray' ) ?: 'unknown',
 			'forced' => $profile->isForced(),

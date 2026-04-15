@@ -101,6 +101,7 @@ class ExcimerSpeedscopeProfiler implements ISpeedscopeProfiler {
 	}
 
 	private function isForced(): bool {
+		// phpcs:ignore MediaWiki.Usage.SuperGlobalsUsage.SuperGlobals
 		return isset( $_GET[$this->config->getForcedParam()] ) || getenv( 'SPEEDSCOPE_FORCE_PROFILE' );
 	}
 

@@ -12,6 +12,7 @@ class SpeedscopeConfig {
 	 * @param string $environment
 	 * @param string[] $excludedEntryPoints
 	 * @param string $forcedParam
+	 * @param array{forced:float,sample:float} $period
 	 * @param array $samplingRates
 	 */
 	private function __construct(
