@@ -22,6 +22,7 @@ return [
 		);
 	},
 	'Speedscope.Profiler' => static function ( MediaWikiServices $services ): ISpeedscopeProfiler {
+		// This is hacky, but we need to instantiate the profiler before the service container is available.
 		global $wgSpeedscopeProfiler;
 		return $wgSpeedscopeProfiler ?? new NoOpSpeedscopeProfiler();
 	},
