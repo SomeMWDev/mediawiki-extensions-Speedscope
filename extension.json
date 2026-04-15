@@ -83,7 +83,9 @@
 		"ext.speedscope.notification": {
 			"localBasePath": "resources/ext.speedscope.notification",
 			"remoteExtPath": "Speedscope/resources/ext.speedscope.notification",
-			"dependencies": [],
+			"dependencies": [
+				"mediawiki.jqueryMsg"
+			],
 			"styles": [],
 			"packageFiles": [
 				"notification.js"

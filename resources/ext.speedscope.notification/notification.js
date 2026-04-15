@@ -16,14 +16,12 @@ $( () => {
 		.text( mw.msg( 'speedscope-notification-link-metadata' ) );
 
 	mw.notify(
-		$( '<div>' ).append(
-			mw.message(
-				'speedscope-notification',
-				$speedscopeLink,
-				$jsonLink,
-				$metadataLink
-			).parseDom()
-		),
+		$( '<div>' ).append( mw.message(
+			'speedscope-notification',
+			$speedscopeLink,
+			$jsonLink,
+			$metadataLink
+		).parseDom() ),
 		{
 			autoHide: false,
 			title: mw.msg( 'speedscope-notification-success' ),
