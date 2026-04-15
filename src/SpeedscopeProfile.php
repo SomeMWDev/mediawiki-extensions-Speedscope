@@ -6,6 +6,7 @@ class SpeedscopeProfile {
 
 	private ?array $data = null;
 	private ?array $parserReport = null;
+	private bool $storeParserReport = false;
 
 	public function __construct(
 		private readonly string $environment,
@@ -44,6 +45,14 @@ class SpeedscopeProfile {
 
 	public function setParserReport( ?array $parserReport ): void {
 		$this->parserReport = $parserReport;
+	}
+
+	public function setStoreParserReport( bool $storeParserReport ): void {
+		$this->storeParserReport = $storeParserReport;
+	}
+
+	public function shouldStoreParserReport(): bool {
+		return $this->storeParserReport;
 	}
 
 }

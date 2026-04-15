@@ -65,7 +65,9 @@
 		}
 	},
 	"Hooks": {
-		"BeforePageDisplay": "main"
+		"BeforePageDisplay": "main",
+		"OutputPageParserOutput": "main",
+		"ParserBeforeInternalParse": "main"
 	},
 	"MessagesDirs": {
 		"Speedscope": [
