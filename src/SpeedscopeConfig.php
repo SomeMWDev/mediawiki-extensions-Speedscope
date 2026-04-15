@@ -13,7 +13,7 @@ class SpeedscopeConfig {
 	 * @param string[] $excludedEntryPoints
 	 * @param string $forcedParam
 	 * @param array{forced:float,sample:float} $period
-	 * @param array $samplingRates
+	 * @param array<string,float> $samplingRates
 	 */
 	private function __construct(
 		private readonly string $environment,
@@ -57,6 +57,9 @@ class SpeedscopeConfig {
 		return $this->period['sample'];
 	}
 
+	/**
+	 * @return array<string,float>
+	 */
 	public function getSamplingRates(): array {
 		return $this->samplingRates;
 	}

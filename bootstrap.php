@@ -17,7 +17,7 @@ $wgSpeedscopeEnvironment ??= 'prod';
 $wgSpeedscopeExcludedEntryPoints ??= [ 'cli' ];
 $wgSpeedscopeForcedParam ??= 'forceprofile';
 $wgSpeedscopePeriod ??= [ 'forced' => 0.0001, 'sample' => 0.001 ];
-$wgSpeedscopeSamplingRates ??= [ 'prod' => '0.01' ];
+$wgSpeedscopeSamplingRates ??= [ 'prod' => 0.01 ];
 
 $wgSpeedscopeProfiler = new ExcimerSpeedscopeProfiler( SpeedscopeConfig::newFromGlobals() );
 $wgSpeedscopeProfiler->init();
