@@ -27,7 +27,8 @@ class SpeedscopeLogger {
 	}
 
 	public function log( SpeedscopeProfile $profile ): StatusValue {
-		if ( !$profile->hasData() === null ) {
+		$data = $profile->getData();
+		if ( $data === null ) {
 			return StatusValue::newFatal( new RawMessage( 'Attempted to log profile without data!' ) );
 		}
 
@@ -37,7 +38,7 @@ class SpeedscopeLogger {
 		}
 
 		$requestUri = $_SERVER['REQUEST_URI'] ?? MW_ENTRY_POINT;
-		$data = $this->appendAdditionalData( $profile->getData(), $requestUri );
+		$data = $this->appendAdditionalData( $data, $requestUri );
 
 		$context = RequestContext::getMain();
 		$body = json_encode( [
@@ -72,7 +73,7 @@ class SpeedscopeLogger {
 			return StatusValue::newGood();
 		}
 
-		return StatusValue::newFatal( new RawMessage( $response->getBody() ) )
+		return StatusValue::newFatal( new RawMessage( $response->getBody()->getContents() ) )
 			->error( new RawMessage( 'Code: ' . $response->getStatusCode() ) );
 	}
 

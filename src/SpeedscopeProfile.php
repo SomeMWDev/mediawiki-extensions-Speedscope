@@ -19,10 +19,6 @@ class SpeedscopeProfile {
 		return $this->data;
 	}
 
-	public function hasData(): bool {
-		return $this->data !== null;
-	}
-
 	public function setData( ?array $data ): void {
 		$this->data = $data;
 	}
