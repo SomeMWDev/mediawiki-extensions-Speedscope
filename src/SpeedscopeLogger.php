@@ -19,6 +19,7 @@ class SpeedscopeLogger {
 
 	public const CONSTRUCTOR_OPTIONS = [
 		SpeedscopeConfigNames::ENDPOINT,
+		SpeedscopeConfigNames::EXPOSE_CPU_INFO,
 		SpeedscopeConfigNames::TOKEN,
 	];
 
@@ -94,7 +95,9 @@ class SpeedscopeLogger {
 	 */
 	private function appendAdditionalData( array $data, string $requestUri ): array {
 		$data['profiles'][0]['name'] = $requestUri;
-		$data['cpuinfo'] = file_get_contents( '/proc/stat' );
+		if ( $this->options->get( SpeedscopeConfigNames::EXPOSE_CPU_INFO ) ) {
+			$data['cpuinfo'] = file_get_contents( '/proc/stat' );
+		}
 		$data['microtime'] = microtime( true );
 		$data['hostname'] = wfHostname();
 		$data['memory_peak_allocated_bytes'] = memory_get_peak_usage( true );

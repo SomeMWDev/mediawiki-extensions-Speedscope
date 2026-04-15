@@ -32,6 +32,10 @@
 			"description": "A list of entry points that are excluded from sampling. Default defined in bootstrap.php",
 			"value": null
 		},
+		"ExposeCPUInfo": {
+			"description": "Whether to add the contents of /proc/stat to profiles.",
+			"value": false
+		},
 		"ForcedParam": {
 			"description": "A query parameter that forces profiling when present. Default defined in bootstrap.php",
 			"value": null
