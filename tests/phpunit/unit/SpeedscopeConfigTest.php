@@ -1,6 +1,6 @@
 <?php
 
-namespace MediaWiki\Extension\Speedscope\Tests\unit;
+namespace MediaWiki\Extension\Speedscope\Tests\Unit;
 
 use MediaWiki\Extension\Speedscope\SpeedscopeConfig;
 use MediaWiki\Extension\Speedscope\SpeedscopeConfigNames;

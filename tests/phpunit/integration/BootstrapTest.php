@@ -11,6 +11,7 @@ use MediaWikiIntegrationTestCase;
 class BootstrapTest extends MediaWikiIntegrationTestCase {
 
 	private function requireBootstrapFile(): void {
+		// phpcs:ignore MediaWiki.NamingConventions.ValidGlobalName.allowedPrefix
 		global $IP;
 		require_once "$IP/extensions/Speedscope/bootstrap.php";
 	}

@@ -32,6 +32,7 @@ class SpeedscopeConfig {
 			SpeedscopeConfigNames::PERIOD,
 			SpeedscopeConfigNames::SAMPLING_RATES,
 		];
+		// @phan-suppress-next-line PhanParamTooFewUnpack
 		return new self( ...array_map( static fn ( $c ) => $GLOBALS["wg$c"], $names ) );
 	}
 

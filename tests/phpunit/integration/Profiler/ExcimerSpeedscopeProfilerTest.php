@@ -8,7 +8,6 @@ use MediaWiki\Extension\Speedscope\SpeedscopeConfig;
 use MediaWiki\Extension\Speedscope\SpeedscopeConfigNames;
 use MediaWiki\Extension\Speedscope\SpeedscopeLogger;
 use MediaWiki\Language\RawMessage;
-use MediaWiki\MediaWikiServices;
 use MediaWikiIntegrationTestCase;
 use Psr\Log\LoggerInterface;
 use StatusValue;
@@ -42,8 +41,10 @@ class ExcimerSpeedscopeProfilerTest extends MediaWikiIntegrationTestCase {
 	}
 
 	private function forceProfile( string $param = 'forceprofile' ): ScopedCallback {
+		// phpcs:ignore MediaWiki.Usage.SuperGlobalsUsage.SuperGlobals
 		$_GET[$param] = 1;
 		return new ScopedCallback( static function () use ( $param ) {
+			// phpcs:ignore MediaWiki.Usage.SuperGlobalsUsage.SuperGlobals
 			unset( $_GET[$param] );
 		} );
 	}
