@@ -18,6 +18,8 @@ class ExcimerSpeedscopeProfiler implements ISpeedscopeProfiler {
 
 	private ExcimerProfiler $excimer;
 	private ?SpeedscopeProfile $profile = null;
+	/** Currently only used in tests */
+	private bool $forceDeferredUpdate = false;
 
 	/**
 	 * Only for use by bootstrap.php!
@@ -32,11 +34,13 @@ class ExcimerSpeedscopeProfiler implements ISpeedscopeProfiler {
 	 * @internal Only for use in bootstrap.php.
 	 */
 	public function init(): void {
+		// @codeCoverageIgnoreStart
 		if ( !extension_loaded( 'excimer' ) ) {
 			// This is already required in extension.json, but let's throw here instead of below when constructing
 			// an ExcimerProfiler
 			throw new LogicException( 'Excimer needs to be loaded to use the Speedscope extension!' );
 		}
+		// @codeCoverageIgnoreEnd
 
 		if ( $this->isForced() || $this->shouldSampleRequest() ) {
 			$this->recordProfile();
@@ -63,7 +67,7 @@ class ExcimerSpeedscopeProfiler implements ISpeedscopeProfiler {
 		$this->excimer->setEventType( EXCIMER_REAL );
 		$this->excimer->start();
 
-		if ( MW_ENTRY_POINT === 'cli' ) {
+		if ( MW_ENTRY_POINT === 'cli' && !$this->forceDeferredUpdate ) {
 			register_shutdown_function( $this->send( ... ) );
 		} else {
 			DeferredUpdates::addCallableUpdate( $this->send( ... ) );
@@ -74,11 +78,13 @@ class ExcimerSpeedscopeProfiler implements ISpeedscopeProfiler {
 	 * Stop the profiler and send the profile to the speedscope service.
 	 */
 	private function send(): void {
+		// @codeCoverageIgnoreStart
 		if ( !MediaWikiServices::hasInstance() ) {
 			// We probably don't want the profile if the service container isn't even ready yet
 			wfLogWarning( 'Cannot send speedscope profile before the service container is initialized!' );
 			return;
 		}
+		// @codeCoverageIgnoreEnd
 
 		$this->excimer->stop();
 		$this->profile->setData( $this->excimer->getLog()->getSpeedscopeData() );

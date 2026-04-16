@@ -7,6 +7,8 @@ use MediaWiki\Extension\Speedscope\SpeedscopeLogger;
 use MediaWiki\Extension\Speedscope\SpeedscopeProfile;
 use MediaWiki\MediaWikiServices;
 
+// @codeCoverageIgnoreStart
+
 /**
  * @phpcs-require-sorted-array
  * Tested in ServiceWiringTest.php
@@ -27,3 +29,5 @@ return [
 		return $wgSpeedscopeProfiler ?? new NoOpSpeedscopeProfiler();
 	},
 ];
+
+// @codeCoverageIgnoreEnd
