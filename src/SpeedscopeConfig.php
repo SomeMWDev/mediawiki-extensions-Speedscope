@@ -15,7 +15,7 @@ class SpeedscopeConfig {
 	 * @param array{forced:float,sample:float} $period
 	 * @param array<string,float> $samplingRates
 	 */
-	private function __construct(
+	public function __construct(
 		private readonly string $environment,
 		private readonly array $excludedEntryPoints,
 		private readonly string $forcedParam,
@@ -25,16 +25,14 @@ class SpeedscopeConfig {
 	}
 
 	public static function newFromGlobals(): self {
-		global $wgSpeedscopeEnvironment, $wgSpeedscopeExcludedEntryPoints, $wgSpeedscopeForcedParam,
-			   $wgSpeedscopePeriod, $wgSpeedscopeSamplingRates;
-
-		return new self(
-			environment: $wgSpeedscopeEnvironment,
-			excludedEntryPoints: $wgSpeedscopeExcludedEntryPoints,
-			forcedParam: $wgSpeedscopeForcedParam,
-			period: $wgSpeedscopePeriod,
-			samplingRates: $wgSpeedscopeSamplingRates,
-		);
+		$names = [
+			SpeedscopeConfigNames::ENVIRONMENT,
+			SpeedscopeConfigNames::EXCLUDED_ENTRY_POINTS,
+			SpeedscopeConfigNames::FORCED_PARAM,
+			SpeedscopeConfigNames::PERIOD,
+			SpeedscopeConfigNames::SAMPLING_RATES,
+		];
+		return new self( ...array_map( static fn ( $c ) => $GLOBALS["wg$c"], $names ) );
 	}
 
 	public function getEnvironment(): string {
