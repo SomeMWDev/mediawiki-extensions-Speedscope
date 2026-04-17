@@ -7,7 +7,6 @@ use MediaWiki\Config\ServiceOptions;
 use MediaWiki\Context\RequestContext;
 use MediaWiki\Exception\MWExceptionHandler;
 use MediaWiki\Http\HttpRequestFactory;
-use MediaWiki\Language\RawMessage;
 use MediaWiki\WikiMap\WikiMap;
 use StatusValue;
 use Throwable;
@@ -39,12 +38,12 @@ class SpeedscopeLogger {
 	public function log( SpeedscopeProfile $profile ): StatusValue {
 		$data = $profile->getData();
 		if ( $data === null ) {
-			return StatusValue::newFatal( new RawMessage( 'Attempted to log profile without data!' ) );
+			return StatusValue::newFatal( 'speedscope-log-error-no-data' );
 		}
 
 		$token = $this->options->get( SpeedscopeConfigNames::TOKEN );
 		if ( $token === null ) {
-			return StatusValue::newFatal( new RawMessage( 'No token set!' ) );
+			return StatusValue::newFatal( 'speedscope-log-error-no-token' );
 		}
 
 		$requestUri = $_SERVER['REQUEST_URI'] ?? MW_ENTRY_POINT;
@@ -76,15 +75,18 @@ class SpeedscopeLogger {
 			$response = $client->post( "$endpoint/log", $options );
 		} catch ( Throwable $e ) {
 			MWExceptionHandler::logException( $e );
-			return StatusValue::newFatal( new RawMessage( $e->getMessage() ) );
+			return StatusValue::newFatal( 'speedscope-log-error-request-failed', $e->getMessage() );
 		}
 
 		if ( $response->getStatusCode() === 200 || $response->getStatusCode() === 201 ) {
 			return StatusValue::newGood();
 		}
 
-		return StatusValue::newFatal( new RawMessage( $response->getBody()->getContents() ) )
-			->error( new RawMessage( 'Code: ' . $response->getStatusCode() ) );
+		return StatusValue::newFatal(
+			'speedscope-log-error-request-bad-status',
+			$response->getStatusCode(),
+			$response->getBody()->getContents(),
+		);
 	}
 
 	/**

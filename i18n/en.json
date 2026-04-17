@@ -9,5 +9,9 @@
 	"speedscope-notification-link-view": "View profile",
 	"speedscope-notification-link-json": "JSON",
 	"speedscope-notification-link-metadata": "Metadata",
-	"speedscope-notification-success": "Profile recorded successfully"
+	"speedscope-notification-success": "Profile recorded successfully",
+	"speedscope-log-error-no-data": "Attempted to log profile without data!",
+	"speedscope-log-error-no-token": "No token set!",
+	"speedscope-log-error-request-failed": "Request failed: $1",
+	"speedscope-log-error-request-bad-status": "Request returned bad status code $1. Response: $2"
 }
