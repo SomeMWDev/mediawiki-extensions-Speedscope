@@ -134,7 +134,7 @@ class SpeedscopeLoggerTest extends MediaWikiUnitTestCase {
 				}
 
 				$body = $this->createMock( StreamInterface::class );
-				$body->method( 'getContents' )->willReturn( $responseBody );
+				$body->method( 'getContents' )->willReturn( $responseBody ?? '' );
 
 				$response = $this->createMock( ResponseInterface::class );
 				$response->method( 'getStatusCode' )->willReturn( $statusCode );
