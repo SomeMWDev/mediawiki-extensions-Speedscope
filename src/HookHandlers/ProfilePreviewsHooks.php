@@ -20,6 +20,7 @@ class ProfilePreviewsHooks implements
 	ParserLimitReportPrepareHook
 {
 
+	private const EXTENSION_DATA_KEY = 'speedscope-profile';
 	private const LIMIT_REPORT_KEY = 'speedscope-profile';
 	private const PREFERENCE_NAME = 'speedscope-profile-previews';
 
@@ -58,36 +59,51 @@ class ProfilePreviewsHooks implements
 			self::LIMIT_REPORT_KEY,
 			$this->profiler->getProfile()->getURL( $this->config )
 		);
+		$parser->getOutput()->setExtensionData( self::EXTENSION_DATA_KEY, true );
 	}
 
 	/** @inheritDoc */
-	public function onParserLimitReportFormat( $key, &$value, &$report, $isHTML, $localize ) {
+	public function onParserLimitReportFormat( $key, &$value, &$report, $isHTML, $localize ): void {
 		if ( !$isHTML || $key !== self::LIMIT_REPORT_KEY ) {
 			return;
 		}
 		if ( !$this->profiler->getProfile()?->isForced() ) {
 			return;
 		}
-		$report .= Html::rawElement(
-			'tr',
-			[],
-			Html::element( 'th', [], 'Speedscope profile' ) .
-			Html::rawElement( 'td', [], Html::element(
-				'a',
-				[
-					'href' => $value,
-					'target' => '_blank',
-				],
-				'View' // TODO
-			)),
-		);
+
+		$labelMsg = wfMessage( 'speedscope-parser-report-label' );
+		$linkTextMsg = wfMessage( 'speedscope-parser-report-link-text' );
+		if ( !$localize ) {
+			$labelMsg->inLanguage( 'en' )->useDatabase( false );
+			$linkTextMsg->inLanguage( 'en' )->useDatabase( false );
+		}
+
+		$header = Html::element( 'th', [], $labelMsg->text() );
+		$data = Html::rawElement( 'td', [], Html::element(
+			'a',
+			[
+				'href' => $value,
+				'target' => '_blank',
+			],
+			$linkTextMsg->text()
+		) );
+
+		$report .= Html::rawElement( 'tr', [], $header . $data );
 	}
 
-	/** @inheritDoc */
+	/**
+	 * Stop the recording if a preview parse has just ended, and we're recording a preview profile.
+	 * @inheritDoc
+	 */
 	public function onParserLimitReportPrepare( $parser, $output ): void {
 		if ( $parser->getOptions()?->getRenderReason() !== 'page-preview' ) {
 			return;
 		}
+		if ( !$parser->getOutput()?->getExtensionData( self::EXTENSION_DATA_KEY ) ) {
+			// Make sure this is the exact parse that triggered the profile.
+			return;
+		}
+		$parser->getOutput()->setExtensionData( self::EXTENSION_DATA_KEY, null );
 		$profile = $this->profiler->getProfile();
 		if ( $profile?->getCause() !== SpeedscopeProfile::CAUSE_FORCED_PREVIEW ) {
 			return;
