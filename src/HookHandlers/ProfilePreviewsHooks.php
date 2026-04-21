@@ -54,7 +54,6 @@ class ProfilePreviewsHooks implements
 		if ( !$this->userOptionsLookup->getBoolOption( $user, self::PREFERENCE_NAME ) ) {
 			return;
 		}
-		// TODO what do we do if we're already recording a profile?
 		if ( !$this->profiler->getProfile() ) {
 			$this->profiler->recordProfile( SpeedscopeProfile::CAUSE_FORCED_PREVIEW );
 			// @codeCoverageIgnoreStart
