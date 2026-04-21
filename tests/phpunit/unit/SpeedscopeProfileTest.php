@@ -2,6 +2,8 @@
 
 namespace MediaWiki\Extension\Speedscope\Tests\Unit;
 
+use MediaWiki\Config\HashConfig;
+use MediaWiki\Extension\Speedscope\SpeedscopeConfigNames;
 use MediaWiki\Extension\Speedscope\SpeedscopeProfile;
 use MediaWikiUnitTestCase;
 
@@ -33,6 +35,53 @@ class SpeedscopeProfileTest extends MediaWikiUnitTestCase {
 		$this->assertFalse( $profile->shouldStoreParserReport() );
 		$profile->setStoreParserReport( true );
 		$this->assertTrue( $profile->shouldStoreParserReport() );
+	}
+
+	/**
+	 * @dataProvider provideTestIsForced
+	 */
+	public function testIsForced( string $cause, bool $expected ) {
+		$profile = new SpeedscopeProfile( 'test', $cause, 'test-id' );
+		$this->assertEquals( $expected, $profile->isForced() );
+	}
+
+	private static function provideTestIsForced(): array {
+		return [
+			[
+				SpeedscopeProfile::CAUSE_SAMPLE,
+				false,
+			],
+			[
+				SpeedscopeProfile::CAUSE_FORCED_PREVIEW,
+				true,
+			],
+			[
+				SpeedscopeProfile::CAUSE_FORCED_URL,
+				true,
+			],
+			[
+				SpeedscopeProfile::CAUSE_FORCED_ENV,
+				true,
+			],
+		];
+	}
+
+	public function testGetURL_PublicEndpoint() {
+		$config = new HashConfig( [
+			SpeedscopeConfigNames::PUBLIC_ENDPOINT => 'localhost:1234',
+			SpeedscopeConfigNames::ENDPOINT => 'localhost:3000',
+		] );
+		$profile = new SpeedscopeProfile( 'test', SpeedscopeProfile::CAUSE_FORCED_PREVIEW, 'test-id' );
+		$this->assertEquals( 'localhost:1234/view/test-id', $profile->getURL( $config ) );
+	}
+
+	public function testGetURL_Endpoint() {
+		$config = new HashConfig( [
+			SpeedscopeConfigNames::PUBLIC_ENDPOINT => null,
+			SpeedscopeConfigNames::ENDPOINT => 'localhost:3000',
+		] );
+		$profile = new SpeedscopeProfile( 'test', SpeedscopeProfile::CAUSE_FORCED_PREVIEW, 'test-id' );
+		$this->assertEquals( 'localhost:3000/view/test-id', $profile->getURL( $config ) );
 	}
 
 }
