@@ -36,6 +36,9 @@ class ProfilePreviewsHooks implements
 
 	/** @inheritDoc */
 	public function onEditPageGetCheckboxesDefinition( $editpage, &$checkboxes ): void {
+		if ( !$this->userOptionsLookup->getBoolOption( $editpage->getContext()->getUser(), self::PREFERENCE_NAME ) ) {
+			return;
+		}
 		$checkboxes['wpProfilePreview'] = [
 			'id' => 'wpProfilePreview',
 			'default' => $editpage->getContext()->getRequest()->getCheck( 'wpProfilePreview' ),
