@@ -2,8 +2,6 @@
 
 namespace MediaWiki\Extension\Speedscope\Tests\Unit;
 
-use MediaWiki\Config\HashConfig;
-use MediaWiki\Extension\Speedscope\SpeedscopeConfigNames;
 use MediaWiki\Extension\Speedscope\SpeedscopeProfile;
 use MediaWikiUnitTestCase;
 
