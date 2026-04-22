@@ -66,22 +66,4 @@ class SpeedscopeProfileTest extends MediaWikiUnitTestCase {
 		];
 	}
 
-	public function testGetURL_PublicEndpoint() {
-		$config = new HashConfig( [
-			SpeedscopeConfigNames::PUBLIC_ENDPOINT => 'localhost:1234',
-			SpeedscopeConfigNames::ENDPOINT => 'localhost:3000',
-		] );
-		$profile = new SpeedscopeProfile( 'test', SpeedscopeProfile::CAUSE_FORCED_PREVIEW, 'test-id' );
-		$this->assertEquals( 'localhost:1234/view/test-id', $profile->getURL( $config ) );
-	}
-
-	public function testGetURL_Endpoint() {
-		$config = new HashConfig( [
-			SpeedscopeConfigNames::PUBLIC_ENDPOINT => null,
-			SpeedscopeConfigNames::ENDPOINT => 'localhost:3000',
-		] );
-		$profile = new SpeedscopeProfile( 'test', SpeedscopeProfile::CAUSE_FORCED_PREVIEW, 'test-id' );
-		$this->assertEquals( 'localhost:3000/view/test-id', $profile->getURL( $config ) );
-	}
-
 }

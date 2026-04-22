@@ -34,6 +34,7 @@ class ProfilePreviewsHooksIntegrationTest extends MediaWikiIntegrationTestCase {
 		$context->setUser( $user->getUser() );
 		$context->setTitle( $page->getTitle() );
 		$context->getOutput()->setTitle( $page->getTitle() );
+		$context->getRequest()->setVal( 'wpProfilePreview', true );
 		RequestContext::getMain()->setUser( $user->getUser() );
 		$this->getServiceContainer()->getUserOptionsManager()->setOption(
 			$user->getUserIdentity(),
@@ -70,7 +71,7 @@ class ProfilePreviewsHooksIntegrationTest extends MediaWikiIntegrationTestCase {
 			->doPreviewParse( $page->getContent() );
 
 		$limitReport = EditPage::getPreviewLimitReport( $parserOutput );
-		$this->assertStringContainsString( 'http://localhost:3000/view/integrationtest123', $limitReport );
+		$this->assertStringContainsString( 'http://localhost:3000/view/', $limitReport );
 	}
 
 }

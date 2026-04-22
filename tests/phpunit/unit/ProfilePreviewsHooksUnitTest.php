@@ -75,15 +75,18 @@ class ProfilePreviewsHooksUnitTest extends MediaWikiUnitTestCase {
 	}
 
 	public function testOnParserBeforeInternalParse_Success() {
+		RequestContext::getMain()->getRequest()->setVal( 'wpProfilePreview', true );
 		$parser = $this->createNoOpMock( Parser::class, [ 'getOptions', 'getOutput' ] );
 		$parserOptions = $this->createMock( ParserOptions::class );
 		$parserOptions->expects( $this->once() )->method( 'getRenderReason' )->willReturn( 'page-preview' );
 		$parser->method( 'getOptions' )->willReturn( $parserOptions );
 		$parserOutput = $this->createMock( ParserOutput::class );
-		$url = 'http://localhost:3000/view/test123';
 		$parserOutput->expects( $this->once() )
 			->method( 'setLimitReportData' )
-			->with( ProfilePreviewsHooks::LIMIT_REPORT_KEY, $url );
+			->willReturnCallback( function ( $key, $val ) {
+				$this->assertEquals( ProfilePreviewsHooks::LIMIT_REPORT_KEY, $key );
+				$this->assertStringContainsString( 'localhost:3000/view/', $val );
+			} );
 		$parserOutput->expects( $this->once() )
 			->method( 'setExtensionData' )
 			->with( ProfilePreviewsHooks::EXTENSION_DATA_KEY, true );
@@ -99,7 +102,6 @@ class ProfilePreviewsHooksUnitTest extends MediaWikiUnitTestCase {
 				$createdProfile = true;
 			} );
 		$profile = $this->createMock( SpeedscopeProfile::class );
-		$profile->expects( $this->once() )->method( 'getURL' )->willReturn( $url );
 		$profiler->expects( $this->atLeastOnce() )
 			->method( 'getProfile' )
 			->willReturnCallback( static function () use ( $profile, &$createdProfile ) {

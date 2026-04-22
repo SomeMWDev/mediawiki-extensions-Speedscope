@@ -15,7 +15,7 @@ interface ISpeedscopeProfiler {
 	 * Start recording a profile.
 	 * @param string $cause One of the SpeedscopeProfile::CAUSE_... constants
 	 */
-	public function recordProfile( string $cause ): void;
+	public function recordProfile( string $cause, ?string $id = null ): void;
 
 	/**
 	 * Stop recording the profile that's currently being recorded.

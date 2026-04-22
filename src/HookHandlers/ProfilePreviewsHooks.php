@@ -5,7 +5,9 @@ namespace MediaWiki\Extension\Speedscope\HookHandlers;
 use MediaWiki\Config\Config;
 use MediaWiki\Context\RequestContext;
 use MediaWiki\Extension\Speedscope\Profiler\ISpeedscopeProfiler;
+use MediaWiki\Extension\Speedscope\SpeedscopeConfigNames;
 use MediaWiki\Extension\Speedscope\SpeedscopeProfile;
+use MediaWiki\Hook\EditPageGetCheckboxesDefinitionHook;
 use MediaWiki\Hook\ParserBeforeInternalParseHook;
 use MediaWiki\Hook\ParserLimitReportFormatHook;
 use MediaWiki\Hook\ParserLimitReportPrepareHook;
@@ -14,6 +16,7 @@ use MediaWiki\Preferences\Hook\GetPreferencesHook;
 use MediaWiki\User\Options\UserOptionsLookup;
 
 class ProfilePreviewsHooks implements
+	EditPageGetCheckboxesDefinitionHook,
 	GetPreferencesHook,
 	ParserBeforeInternalParseHook,
 	ParserLimitReportFormatHook,
@@ -29,6 +32,16 @@ class ProfilePreviewsHooks implements
 		private readonly ISpeedscopeProfiler $profiler,
 		private readonly UserOptionsLookup $userOptionsLookup,
 	) {
+	}
+
+	/** @inheritDoc */
+	public function onEditPageGetCheckboxesDefinition( $editpage, &$checkboxes ): void {
+		$checkboxes['wpProfilePreview'] = [
+			'id' => 'wpProfilePreview',
+			'default' => $editpage->getContext()->getRequest()->getCheck( 'wpProfilePreview' ),
+			'title-message' => 'speedscope-editpage-profile-preview-title',
+			'label-message' => 'speedscope-editpage-profile-preview-label',
+		];
 	}
 
 	/** @inheritDoc */
@@ -50,23 +63,28 @@ class ProfilePreviewsHooks implements
 		if ( $parser->getOptions()?->getRenderReason() !== 'page-preview' ) {
 			return;
 		}
+		if ( !RequestContext::getMain()->getRequest()->getCheck( 'wpProfilePreview' ) ) {
+			return;
+		}
 		$user = RequestContext::getMain()->getUser();
 		if ( !$this->userOptionsLookup->getBoolOption( $user, self::PREFERENCE_NAME ) ) {
 			return;
 		}
+		$id = $this->profiler->getProfile()?->getId() ?? bin2hex( random_bytes( 16 ) );
+		$publicEndpoint = $this->config->get( SpeedscopeConfigNames::PUBLIC_ENDPOINT ) ??
+			$this->config->get( SpeedscopeConfigNames::ENDPOINT );
+		$url = "$publicEndpoint/view/$id";
+		$parser->getOutput()->setLimitReportData( self::LIMIT_REPORT_KEY, $url );
+		$parser->getOutput()->setExtensionData( self::EXTENSION_DATA_KEY, true );
+		$parser->getOutput()->addWarningMsg( 'speedscope-editpage-profile-notice', $url );
 		if ( !$this->profiler->getProfile() ) {
-			$this->profiler->recordProfile( SpeedscopeProfile::CAUSE_FORCED_PREVIEW );
+			$this->profiler->recordProfile( SpeedscopeProfile::CAUSE_FORCED_PREVIEW, $id );
 			// @codeCoverageIgnoreStart
 			if ( !defined( 'MW_PHPUNIT_TEST' ) ) {
 				ProfileHooks::sendProfileHeader();
 			}
 			// @codeCoverageIgnoreEnd
 		}
-		$parser->getOutput()->setLimitReportData(
-			self::LIMIT_REPORT_KEY,
-			$this->profiler->getProfile()->getURL( $this->config )
-		);
-		$parser->getOutput()->setExtensionData( self::EXTENSION_DATA_KEY, true );
 	}
 
 	/**

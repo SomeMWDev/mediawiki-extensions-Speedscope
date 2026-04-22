@@ -56,11 +56,11 @@ class ExcimerSpeedscopeProfiler implements ISpeedscopeProfiler {
 	 * speedscope service.
 	 * @inheritDoc
 	 */
-	public function recordProfile( string $cause ): void {
+	public function recordProfile( string $cause, ?string $id = null ): void {
 		$this->profile = new SpeedscopeProfile(
 			environment: $this->config->getEnvironment(),
 			cause: $cause,
-			id: bin2hex( random_bytes( 16 ) )
+			id: $id ?? bin2hex( random_bytes( 16 ) )
 		);
 
 		$this->excimer = new ExcimerProfiler();

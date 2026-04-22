@@ -2,7 +2,6 @@
 
 namespace MediaWiki\Extension\Speedscope;
 
-use MediaWiki\Config\Config;
 use MediaWiki\Parser\ParserOutput;
 
 /**
@@ -113,12 +112,6 @@ class SpeedscopeProfile {
 	 */
 	public function shouldStoreParserReport(): bool {
 		return $this->storeParserReport;
-	}
-
-	public function getURL( Config $config ): string {
-		$publicEndpoint = $config->get( SpeedscopeConfigNames::PUBLIC_ENDPOINT ) ??
-			$config->get( SpeedscopeConfigNames::ENDPOINT );
-		return "$publicEndpoint/view/$this->id";
 	}
 
 }
