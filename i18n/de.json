@@ -7,12 +7,16 @@
 	},
 	"speedscope-desc": "Ermöglicht die Erstellung von Speedscope-Laufzeitanalysen",
 	"speedscope-notification": "$1 ($2, $3)",
-	"speedscope-notification-link-view": "Bericht ansehen",
+	"speedscope-notification-link-view": "Analyse ansehen",
 	"speedscope-notification-link-json": "JSON",
 	"speedscope-notification-link-metadata": "Metadaten",
 	"speedscope-notification-success": "Laufzeitanalyse erfolgreich aufgezeichnet",
 	"speedscope-log-error-no-data": "Keine Daten zum Erstellen der Laufzeitanalyse vorhanden!",
 	"speedscope-log-error-no-token": "Kein Token vorhanden!",
 	"speedscope-log-error-request-failed": "Anfrage fehlgeschlagen: $1",
-	"speedscope-log-error-request-bad-status": "Fehlerhafte Anfrage mit Statuscode „$1“. Antwort: $2"
+	"speedscope-log-error-request-bad-status": "Fehlerhafte Anfrage mit Statuscode „$1“. Antwort: $2",
+	"speedscope-profile-previews-label": "Vorschauen Analysieren",
+	"speedscope-profile-previews-help": "Jede Vorschau Analysieren mit einem Link zur Speedscope Übersicht im Parser-Bericht",
+	"speedscope-parser-report-label": "Speedscope Analyse",
+	"speedscope-parser-report-link-text": "Ansehen"
 }
