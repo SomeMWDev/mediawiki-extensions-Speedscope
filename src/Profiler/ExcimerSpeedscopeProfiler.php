@@ -44,7 +44,7 @@ class ExcimerSpeedscopeProfiler implements ISpeedscopeProfiler {
 		// @codeCoverageIgnoreEnd
 
 		$forced = $this->isForced();
-		if ( $forced ) {
+		if ( $forced !== null ) {
 			$this->recordProfile( $forced );
 		} elseif ( $this->shouldSampleRequest() ) {
 			$this->recordProfile( SpeedscopeProfile::CAUSE_SAMPLE );
