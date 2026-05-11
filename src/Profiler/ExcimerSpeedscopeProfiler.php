@@ -124,7 +124,9 @@ class ExcimerSpeedscopeProfiler implements ISpeedscopeProfiler {
 		$samplingRate = $this->config->getSamplingRates()[$this->config->getEnvironment()] ?? 0;
 		return !in_array( MW_ENTRY_POINT, $this->config->getExcludedEntryPoints() )
 			&& $samplingRate > 0
-			&& mt_rand() / mt_getrandmax() < $samplingRate;
+			&& mt_rand() / mt_getrandmax() < $samplingRate
+			// phpcs:ignore MediaWiki.Usage.SuperGlobalsUsage.SuperGlobals
+			&& !isset( $_POST['wpProfilePreview'] );
 	}
 
 	/**
