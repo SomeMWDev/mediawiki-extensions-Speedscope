@@ -79,7 +79,12 @@ class ProfilePreviewsHooks implements
 		$url = "$publicEndpoint/view/$id";
 		$parser->getOutput()->setLimitReportData( self::LIMIT_REPORT_KEY, $url );
 		$parser->getOutput()->setExtensionData( self::EXTENSION_DATA_KEY, true );
-		$parser->getOutput()->addWarningMsg( 'speedscope-editpage-profile-notice', $url );
+		// TODO insert a raw parameter with a link that opens in a new tab once we drop support for 1.45
+		// (1.45 and below don't support raw parameters in warning messages emitted during previews)
+		$parser->getOutput()->addWarningMsg(
+			'speedscope-editpage-profile-notice',
+			$url,
+		);
 		if ( !$this->profiler->getProfile() ) {
 			$this->profiler->recordProfile( SpeedscopeProfile::CAUSE_FORCED_PREVIEW, $id );
 			// @codeCoverageIgnoreStart
