@@ -10,6 +10,7 @@ use MediaWiki\Extension\Speedscope\Profiler\ISpeedscopeProfiler;
 use MediaWiki\Extension\Speedscope\SpeedscopeConfigNames;
 use MediaWiki\Extension\Speedscope\SpeedscopeProfile;
 use MediaWiki\Page\Article;
+use MediaWiki\Parser\ParserOutput;
 use MediaWikiIntegrationTestCase;
 use Wikimedia\TestingAccessWrapper;
 
@@ -69,9 +70,15 @@ class ProfilePreviewsHooksIntegrationTest extends MediaWikiIntegrationTestCase {
 		} );
 		[ 'parserOutput' => $parserOutput ] = TestingAccessWrapper::newFromObject( $editPage )
 			->doPreviewParse( $page->getContent() );
+		/** @var ParserOutput $parserOutput */
 
 		$limitReport = EditPage::getPreviewLimitReport( $parserOutput );
 		$this->assertStringContainsString( 'http://localhost:3000/view/', $limitReport );
+
+		$this->assertEquals(
+			'speedscope-editpage-profile-notice',
+			$parserOutput->getWarningMsgs()[0]->getKey(),
+		);
 	}
 
 }
