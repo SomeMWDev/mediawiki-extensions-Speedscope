@@ -24,8 +24,10 @@ class SpeedscopeProfile {
 	private ?array $data = null;
 	/** @see ParserOutput::getLimitReportJSData() */
 	private ?array $parserReport = null;
-	/** @var bool Whether we should store the parser output for the current request */
+	/** Whether we should store the parser output for the current request */
 	private bool $storeParserReport = false;
+	/** The name of the profile. If null, the request URL will be used instead. */
+	private ?string $name = null;
 
 	/**
 	 * @param string $environment The environment of the request, e.g. `prod` or `dev`
@@ -112,6 +114,20 @@ class SpeedscopeProfile {
 	 */
 	public function shouldStoreParserReport(): bool {
 		return $this->storeParserReport;
+	}
+
+	/**
+	 * @return string|null The name of the profile, or null if none was set.
+	 */
+	public function getName(): ?string {
+		return $this->name;
+	}
+
+	/**
+	 * @param string|null $name The name of the profile, or null to use the request URL.
+	 */
+	public function setName( ?string $name ): void {
+		$this->name = $name;
 	}
 
 }

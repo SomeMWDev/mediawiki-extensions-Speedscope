@@ -20,5 +20,6 @@
 	"speedscope-parser-report-link-text": "View",
 	"speedscope-editpage-profile-preview-label": "Generate flamegraph",
 	"speedscope-editpage-profile-preview-title": "Generate a speedscope flamegraph for the preview.",
-	"speedscope-editpage-profile-notice": "A speedscope profile for this preview can be viewed [$1 here]."
+	"speedscope-editpage-profile-notice": "A speedscope profile for this preview can be viewed [$1 here].",
+	"speedscope-profile-name-preview": "Preview of $1"
 }
