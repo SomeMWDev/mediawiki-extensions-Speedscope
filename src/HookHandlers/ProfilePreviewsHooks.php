@@ -88,6 +88,10 @@ class ProfilePreviewsHooks implements
 		);
 		if ( !$this->profiler->getProfile() ) {
 			$this->profiler->recordProfile( SpeedscopeProfile::CAUSE_FORCED_PREVIEW, $id );
+			$this->profiler->getProfile()?->setName( $parser->msg(
+				'speedscope-profile-name-preview',
+				(string)$parser->getPage(),
+			)->text() );
 			// @codeCoverageIgnoreStart
 			if ( !defined( 'MW_PHPUNIT_TEST' ) ) {
 				ProfileHooks::sendProfileHeader();

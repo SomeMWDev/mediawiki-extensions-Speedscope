@@ -47,7 +47,7 @@ class SpeedscopeLogger {
 		}
 
 		$requestUri = $_SERVER['REQUEST_URI'] ?? MW_ENTRY_POINT;
-		$data = $this->appendAdditionalData( $data, $requestUri );
+		$data = $this->appendAdditionalData( $data, $profile->getName() ?? $requestUri );
 
 		$context = RequestContext::getMain();
 		$body = json_encode( [
@@ -92,11 +92,11 @@ class SpeedscopeLogger {
 	/**
 	 * Add some additional data to the profile.
 	 * @param array<string, mixed> $data
-	 * @param string $requestUri
+	 * @param string $profileName
 	 * @return array<string, mixed>
 	 */
-	private function appendAdditionalData( array $data, string $requestUri ): array {
-		$data['profiles'][0]['name'] = $requestUri;
+	private function appendAdditionalData( array $data, string $profileName ): array {
+		$data['profiles'][0]['name'] = $profileName;
 		if ( $this->options->get( SpeedscopeConfigNames::EXPOSE_CPU_INFO ) ) {
 			$data['cpuinfo'] = file_get_contents( '/proc/stat' );
 		}
