@@ -46,7 +46,9 @@ class SpeedscopeLogger {
 			return StatusValue::newFatal( 'speedscope-log-error-no-token' );
 		}
 
-		$requestUri = $_SERVER['REQUEST_URI'] ?? MW_ENTRY_POINT;
+		$requestUri = isset( $_SERVER['REQUEST_URI'] )
+			? ( ( $_SERVER['HTTP_HOST'] ?? '' ) . $_SERVER['REQUEST_URI'] )
+			: MW_ENTRY_POINT;
 		$data = $this->appendAdditionalData( $data, $profile->getName() ?? $requestUri );
 
 		$context = RequestContext::getMain();
