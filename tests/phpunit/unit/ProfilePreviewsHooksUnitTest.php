@@ -76,7 +76,7 @@ class ProfilePreviewsHooksUnitTest extends MediaWikiUnitTestCase {
 
 	public function testOnParserBeforeInternalParse_Success() {
 		RequestContext::getMain()->getRequest()->setVal( 'wpProfilePreview', true );
-		$parser = $this->createNoOpMock( Parser::class, [ 'getOptions', 'getOutput' ] );
+		$parser = $this->createNoOpMock( Parser::class, [ 'getOptions', 'getOutput', 'getUserIdentity' ] );
 		$parserOptions = $this->createMock( ParserOptions::class );
 		$parserOptions->expects( $this->once() )->method( 'getRenderReason' )->willReturn( 'page-preview' );
 		$parser->method( 'getOptions' )->willReturn( $parserOptions );
@@ -91,6 +91,7 @@ class ProfilePreviewsHooksUnitTest extends MediaWikiUnitTestCase {
 			->method( 'setExtensionData' )
 			->with( ProfilePreviewsHooks::EXTENSION_DATA_KEY, true );
 		$parser->expects( $this->atLeastOnce() )->method( 'getOutput' )->willReturn( $parserOutput );
+		$parser->expects( $this->atLeastOnce() )->method( 'getUserIdentity' )->willReturn( RequestContext::getMain()->getUser() );
 
 		$text = '';
 		$createdProfile = false;
