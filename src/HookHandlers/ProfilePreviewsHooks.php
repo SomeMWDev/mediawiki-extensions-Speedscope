@@ -45,6 +45,7 @@ class ProfilePreviewsHooks implements
 			'title-message' => 'speedscope-editpage-profile-preview-title',
 			'label-message' => 'speedscope-editpage-profile-preview-label',
 		];
+		$editpage->getContext()->getOutput()->addModules( 'ext.speedscope.edit' );
 	}
 
 	/** @inheritDoc */
@@ -63,7 +64,7 @@ class ProfilePreviewsHooks implements
 	 * @inheritDoc
 	 */
 	public function onParserBeforeInternalParse( $parser, &$text, $stripState ): void {
-		if ( $parser->getOptions()?->getRenderReason() !== 'page-preview' ) {
+		if ( !in_array( $parser->getOptions()?->getRenderReason(), [ 'page-preview', 'api-parse' ] ) ) {
 			return;
 		}
 		if ( !RequestContext::getMain()->getRequest()->getCheck( 'wpProfilePreview' ) ) {
@@ -132,7 +133,7 @@ class ProfilePreviewsHooks implements
 	 * @inheritDoc
 	 */
 	public function onParserLimitReportPrepare( $parser, $output ): void {
-		if ( $parser->getOptions()?->getRenderReason() !== 'page-preview' ) {
+		if ( !in_array( $parser->getOptions()?->getRenderReason(), [ 'page-preview', 'api-parse' ] ) ) {
 			return;
 		}
 		if ( !$output->getExtensionData( self::EXTENSION_DATA_KEY ) ) {
