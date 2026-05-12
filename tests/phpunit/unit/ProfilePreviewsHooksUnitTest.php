@@ -79,7 +79,10 @@ class ProfilePreviewsHooksUnitTest extends MediaWikiUnitTestCase {
 
 	public function testOnParserBeforeInternalParse_Success() {
 		RequestContext::getMain()->getRequest()->setVal( 'wpProfilePreview', true );
-		$parser = $this->createNoOpMock( Parser::class, [ 'getOptions', 'getOutput', 'getPage', 'getUserIdentity', 'msg' ] );
+		$parser = $this->createNoOpMock(
+			Parser::class,
+			[ 'getOptions', 'getOutput', 'getPage', 'getUserIdentity', 'msg' ]
+		);
 		$parserOptions = $this->createMock( ParserOptions::class );
 		$parserOptions->expects( $this->once() )->method( 'getRenderReason' )->willReturn( 'page-preview' );
 		$parser->method( 'getOptions' )->willReturn( $parserOptions );
