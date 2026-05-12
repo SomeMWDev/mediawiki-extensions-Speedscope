@@ -135,11 +135,11 @@ class ProfilePreviewsHooks implements
 		if ( $parser->getOptions()?->getRenderReason() !== 'page-preview' ) {
 			return;
 		}
-		if ( !$parser->getOutput()?->getExtensionData( self::EXTENSION_DATA_KEY ) ) {
+		if ( !$output->getExtensionData( self::EXTENSION_DATA_KEY ) ) {
 			// Make sure this is the exact parse that triggered the profile.
 			return;
 		}
-		$parser->getOutput()->setExtensionData( self::EXTENSION_DATA_KEY, null );
+		$output->setExtensionData( self::EXTENSION_DATA_KEY, null );
 		$profile = $this->profiler->getProfile();
 		if ( $profile?->getCause() !== SpeedscopeProfile::CAUSE_FORCED_PREVIEW ) {
 			return;
