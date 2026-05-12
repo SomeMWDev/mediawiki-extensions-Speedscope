@@ -23,15 +23,16 @@ class ProfilePreviewsHooksUnitTest extends MediaWikiUnitTestCase {
 
 	private function newHooks(
 		?ISpeedscopeProfiler $profiler = null,
+		?User $user = null,
 		bool $userOptionEnabled = true,
-		array $configOverrides = []
+		array $configOverrides = [],
 	) {
 		$config = new HashConfig( $configOverrides + [
 			SpeedscopeConfigNames::ENDPOINT => 'localhost:3000',
 			SpeedscopeConfigNames::PUBLIC_ENDPOINT => null,
 		] );
 
-		$user = $this->createNoOpMock( User::class );
+		$user ??= $this->createNoOpMock( User::class );
 		RequestContext::getMain()->setUser( $user );
 		$userOptionsLookup = $this->createNoOpMock( UserOptionsLookup::class, [ 'getBoolOption' ] );
 		$userOptionsLookup->method( 'getBoolOption' )
@@ -91,7 +92,8 @@ class ProfilePreviewsHooksUnitTest extends MediaWikiUnitTestCase {
 			->method( 'setExtensionData' )
 			->with( ProfilePreviewsHooks::EXTENSION_DATA_KEY, true );
 		$parser->expects( $this->atLeastOnce() )->method( 'getOutput' )->willReturn( $parserOutput );
-		$parser->expects( $this->atLeastOnce() )->method( 'getUserIdentity' )->willReturn( RequestContext::getMain()->getUser() );
+		$user = $this->createNoOpMock( User::class );
+		$parser->expects( $this->atLeastOnce() )->method( 'getUserIdentity' )->willReturn( $user );
 
 		$text = '';
 		$createdProfile = false;
@@ -111,6 +113,7 @@ class ProfilePreviewsHooksUnitTest extends MediaWikiUnitTestCase {
 
 		$this->newHooks(
 			profiler: $profiler,
+			user: $user,
 			userOptionEnabled: true
 		)->onParserBeforeInternalParse( $parser, $text, $this->createNoOpMock( StripState::class ) );
 	}
