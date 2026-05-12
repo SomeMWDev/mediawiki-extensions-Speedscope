@@ -69,7 +69,7 @@ class ProfilePreviewsHooks implements
 		if ( !RequestContext::getMain()->getRequest()->getCheck( 'wpProfilePreview' ) ) {
 			return;
 		}
-		$user = RequestContext::getMain()->getUser();
+		$user = $parser->getUserIdentity();
 		if ( !$this->userOptionsLookup->getBoolOption( $user, self::PREFERENCE_NAME ) ) {
 			return;
 		}
