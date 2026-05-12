@@ -12,6 +12,7 @@ use MediaWiki\Parser\Parser;
 use MediaWiki\Parser\ParserOptions;
 use MediaWiki\Parser\ParserOutput;
 use MediaWiki\Parser\StripState;
+use MediaWiki\Title\TitleValue;
 use MediaWiki\User\User;
 use MediaWiki\User\UserOptionsLookup;
 use MediaWikiUnitTestCase;
@@ -77,7 +78,7 @@ class ProfilePreviewsHooksUnitTest extends MediaWikiUnitTestCase {
 
 	public function testOnParserBeforeInternalParse_Success() {
 		RequestContext::getMain()->getRequest()->setVal( 'wpProfilePreview', true );
-		$parser = $this->createNoOpMock( Parser::class, [ 'getOptions', 'getOutput', 'getUserIdentity' ] );
+		$parser = $this->createNoOpMock( Parser::class, [ 'getOptions', 'getOutput', 'getPage', 'getUserIdentity' ] );
 		$parserOptions = $this->createMock( ParserOptions::class );
 		$parserOptions->expects( $this->once() )->method( 'getRenderReason' )->willReturn( 'page-preview' );
 		$parser->method( 'getOptions' )->willReturn( $parserOptions );
@@ -93,6 +94,7 @@ class ProfilePreviewsHooksUnitTest extends MediaWikiUnitTestCase {
 			->with( ProfilePreviewsHooks::EXTENSION_DATA_KEY, true );
 		$parser->expects( $this->atLeastOnce() )->method( 'getOutput' )->willReturn( $parserOutput );
 		$user = $this->createNoOpMock( User::class );
+		$parser->method( 'getPage' )->willReturn( new TitleValue( 0, __METHOD__ ) );
 		$parser->expects( $this->atLeastOnce() )->method( 'getUserIdentity' )->willReturn( $user );
 
 		$text = '';
