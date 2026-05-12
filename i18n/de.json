@@ -5,7 +5,7 @@
 			"Magiczocker"
 		]
 	},
-	"speedscope-desc": "Ermöglicht die Erstellung von Speedscope-Laufzeitanalysen",
+	"speedscope-desc": "Ermöglicht die Erstellung von Speedscope‐Laufzeitanalysen",
 	"speedscope-notification": "$1 ($2, $3)",
 	"speedscope-notification-link-view": "Analyse ansehen",
 	"speedscope-notification-link-json": "JSON",
@@ -15,8 +15,8 @@
 	"speedscope-log-error-no-token": "Kein Token vorhanden!",
 	"speedscope-log-error-request-failed": "Anfrage fehlgeschlagen: $1",
 	"speedscope-log-error-request-bad-status": "Fehlerhafte Anfrage mit Statuscode „$1“. Antwort: $2",
-	"speedscope-profile-previews-label": "Vorschauen Analysieren",
-	"speedscope-profile-previews-help": "Jede Vorschau Analysieren mit einem Link zur Speedscope Übersicht im Parser-Bericht",
-	"speedscope-parser-report-label": "Speedscope Analyse",
+	"speedscope-profile-previews-label": "Vorschauen analysieren",
+	"speedscope-profile-previews-help": "Alle Vorschauen analysieren und im Parser-Bericht zur Speedscope‐Übersicht verlinken",
+	"speedscope-parser-report-label": "Speedscope‐Analyse",
 	"speedscope-parser-report-link-text": "Ansehen"
 }
